@@ -1,0 +1,11 @@
+{% load cravensworth %}
+{% with something_truthy=True %}
+    {% switchon 'active' %}
+        {% if something_truthy %}:ACTIVE-ON:{% endif %}
+    {% endswitchon %}
+    {% switchon 'inactive' %}
+        {% if something_truthy %}:INACTIVE-ON:{% endif %}
+    {% else %}
+        {% if something_truthy %}:INACTIVE-OFF:{% endif %}
+    {% endswitchon %}
+{% endwith %}

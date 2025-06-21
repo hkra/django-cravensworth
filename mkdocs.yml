@@ -1,0 +1,14 @@
+site_name: Django Cravensworth
+theme: readthedocs
+
+plugins:
+- search
+- mkdocstrings:
+    handlers:
+      python:
+        options:
+          show_bases: false
+          show_source: false
+
+markdown_extensions:
+  - def_list

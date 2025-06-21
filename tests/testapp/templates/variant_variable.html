@@ -1,0 +1,8 @@
+{% load cravensworth %}
+{% with experiment='exp_1' variant='active' %}
+    {% variant experiment variant %}
+    :ACTIVE:
+    {% else %}
+    :ELSE:
+    {% endvariant %}
+{% endwith %}

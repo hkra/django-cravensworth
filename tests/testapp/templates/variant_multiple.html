@@ -1,0 +1,10 @@
+{% load cravensworth %}
+{% variant 'exp_1' 'one' %}
+:ONE:
+{% elif 'two' %}
+:TWO:
+{% elif 'three' 'four' %}
+:THREE-FOUR:
+{% elif 'five' %}
+:FIVE:
+{% endvariant %}

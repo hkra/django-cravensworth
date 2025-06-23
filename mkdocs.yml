@@ -7,8 +7,14 @@ plugins:
     handlers:
       python:
         options:
-          show_bases: false
           show_source: false
+          extra:
+            show_inheritance: true
+            inherited_members: true
 
 markdown_extensions:
   - def_list
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - footnotes

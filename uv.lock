@@ -107,6 +107,7 @@ source = { editable = "." }
 dependencies = [
     { name = "django" },
     { name = "rapidhash" },
+    { name = "setuptools-scm" },
     { name = "simpleeval" },
 ]
 
@@ -125,6 +126,7 @@ dev = [
 requires-dist = [
     { name = "django", specifier = ">=4.2" },
     { name = "rapidhash", specifier = ">=0.1.0" },
+    { name = "setuptools-scm", specifier = ">=8.3.1" },
     { name = "simpleeval", specifier = ">=1.0.3" },
 ]
 
@@ -608,6 +610,29 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/81/38/6d7b9170a4833a319ca83796d6e731c95a07d05b083460f2bc97da7fa949/rapidhash-0.1.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:8fea79be9801258cbcdee8608fd31f48bb4e4e41c11d4b856d86d5c3a4b8eb4c", size = 389552, upload-time = "2024-12-04T01:42:33.461Z" },
     { url = "https://files.pythonhosted.org/packages/90/90/c111ef209a16cf24a4ac3035f07ecf550e4edaed42133951edf2eb8165e5/rapidhash-0.1.0-cp39-abi3-win32.whl", hash = "sha256:c62ecbc57bb7b97f7e5969940a686ef1662687988122375943d2f97008ded1f4", size = 90322, upload-time = "2024-12-04T01:42:38.022Z" },
     { url = "https://files.pythonhosted.org/packages/65/47/65b0c44535a768d9527a74a799b3d6a537a4dc0d2edeebf7a1237fde9fab/rapidhash-0.1.0-cp39-abi3-win_amd64.whl", hash = "sha256:e2b6e14a38bd36961f3504d94623a76e3a86d50f08654ae584455e165f674f1e", size = 95654, upload-time = "2024-12-04T01:42:36.242Z" },
+]
+
+[[package]]
+name = "setuptools"
+version = "80.9.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/18/5d/3bf57dcd21979b887f014ea83c24ae194cfcd12b9e0fda66b957c69d1fca/setuptools-80.9.0.tar.gz", hash = "sha256:f36b47402ecde768dbfafc46e8e4207b4360c654f1f3bb84475f0a28628fb19c", size = 1319958, upload-time = "2025-05-27T00:56:51.443Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a3/dc/17031897dae0efacfea57dfd3a82fdd2a2aeb58e0ff71b77b87e44edc772/setuptools-80.9.0-py3-none-any.whl", hash = "sha256:062d34222ad13e0cc312a4c02d73f059e86a4acbfbdea8f8f76b28c99f306922", size = 1201486, upload-time = "2025-05-27T00:56:49.664Z" },
+]
+
+[[package]]
+name = "setuptools-scm"
+version = "8.3.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "setuptools" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/b9/19/7ae64b70b2429c48c3a7a4ed36f50f94687d3bfcd0ae2f152367b6410dff/setuptools_scm-8.3.1.tar.gz", hash = "sha256:3d555e92b75dacd037d32bafdf94f97af51ea29ae8c7b234cf94b7a5bd242a63", size = 78088, upload-time = "2025-04-23T11:53:19.739Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ab/ac/8f96ba9b4cfe3e4ea201f23f4f97165862395e9331a424ed325ae37024a8/setuptools_scm-8.3.1-py3-none-any.whl", hash = "sha256:332ca0d43791b818b841213e76b1971b7711a960761c5bea5fc5cdb5196fbce3", size = 43935, upload-time = "2025-04-23T11:53:17.922Z" },
 ]
 
 [[package]]

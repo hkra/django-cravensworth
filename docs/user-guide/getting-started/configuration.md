@@ -9,10 +9,12 @@ dictionary in your `settings.py`, called `CRAVENSWORTH`.
 
 ## Core Settings
 
+<a id="source"></a>
 `SOURCE` (str)
 :   Import string specifying the experiment source to use. Defaults to
     `cravensworth.core.source.SettingsSource`.
 
+<a id="enabled-ips"></a>
 `ENABLED_IPS` (list[str])
 :   A list of IP addresses. User agents making requests from designated IP
     addresses will be allowed to override experiment variants using the override
@@ -94,7 +96,7 @@ write a full experiment specification.
     ]
 
 For details on each field, refer to
-[Experiment](../../API-reference/experiment.md) in the API reference.
+[Experiment](../../api-reference/experiment.md) in the API reference.
 
 The switch notation and full experiment notation can appear together in the same
 list.

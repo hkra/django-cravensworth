@@ -1,30 +1,41 @@
-# django-cravensworth
+# Django Cravensworth
 
 django-cravensworth is a Django app for feature flags.
 
 ## Quick start
 
-1. Add "cravensworth" to your INSTALLED_APPS setting like this::
+Install the Cravensworth library.
 
-    ```python
+    pip install django-cravensworth
+
+Install Cravensorth core in the installed apps list in your `settings.py`.
+
     INSTALLED_APPS = [
-        ...,
-        "cravensworth",
+        ...
+        'cravensworth.core',
     ]
-    ```
-2. TODO
 
-## Documentation
+Add Cravensworth middleware to the list of middleware in your `settings.py`.
 
-Documentation lives in the `docs/` directory and is written using markdown. To
-build the docs, install dev dependencies then run the build command:
+    MIDDLEWARE = [
+        ...
+        'cravensworth.core.middleware.cravensworth_middleware',
+        ...
+    ]
 
-```shell
-mkdocs build
-```
+If using Cravensworth in a web environment, ensure that the Django request
+context processor is installed in your `TEMPLATES` configuration.
 
-To run the docs server for local development and viewing, run the serve command:
-
-```shell
-mkdocs serve
-```
+    TEMPLATES = [
+        {
+            'BACKEND': 'django.template.backends.django.DjangoTemplates',
+            ...
+            'OPTIONS': {
+                'context_processors': [
+                    ...
+                    'django.template.context_processors.request',
+                    ...
+                ],
+            },
+        },
+    ]

@@ -1,0 +1,53 @@
+name: Publish to PyPi
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.release.tag_name }}
+
+jobs:
+  release-build:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: pypi
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-tags: true
+          ref: refs/tags/${{ github.event.release.tag_name }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.7.13"
+          enable-cache: true
+          cache-dependency-glob: "uv.lock"
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v3
+        with:
+          python-version: 3.13
+
+      - name: Install development dependencies
+        run: |
+          uv pip install -e ".[dev]" --system
+          uv pip install tox tox-gh-actions --system
+
+      - name: Run Tests
+        run: |
+          uv run tox
+
+      - name: Build release distributions
+        run: |
+          uv build
+
+      - name: Publish release distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc

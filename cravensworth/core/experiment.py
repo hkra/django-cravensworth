@@ -358,6 +358,13 @@ def set_state(request: HttpRequest, state: CravensworthState):
     request.META[CravensworthState] = state
 
 
+def get_state(request: HttpRequest) -> CravensworthState:
+    """
+    Gets experiment state from the given request.
+    """
+    return request.META.get(CravensworthState)
+
+
 def is_variant(
     request: HttpRequest, name: str, variant: str | list[str]
 ) -> bool:
@@ -365,7 +372,7 @@ def is_variant(
     Returns true if the determined variant for the current entity matches
     `variant` or one of the list of variants, if multiple.
     """
-    state = request.META.get(CravensworthState)
+    state = get_state()
     if state is None:
         raise ImproperlyConfigured(
             'Cravensworth state was not found in the request. Verify that the '
@@ -424,6 +431,7 @@ __all__ = [
     'Allocation',
     'Audience',
     'Experiment',
+    'get_state',
     'is_on',
     'is_off',
 ]

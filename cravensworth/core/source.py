@@ -3,6 +3,8 @@ from abc import ABC
 from abc import abstractmethod
 from operator import itemgetter
 
+from django.utils.module_loading import import_string
+
 from cravensworth.core.conf import get_setting
 from cravensworth.core.experiment import Allocation, Audience, Experiment
 
@@ -18,6 +20,12 @@ class Source(ABC):
 
     @abstractmethod
     def load(self) -> Iterable[Experiment]:
+        """
+        Loads all experiments that the project should be aware of.
+
+        For projects that use cravensworth_middleware, `load()` will be called
+        for every request.
+        """
         raise NotImplementedError()
 
 
@@ -149,3 +157,9 @@ class SettingsSource(Source):
                 ).validate(),
             ),
         ).validate()
+
+
+def get_source() -> Source:
+    return import_string(
+        get_setting('SOURCE', 'cravensworth.core.source.SettingsSource'),
+    )()

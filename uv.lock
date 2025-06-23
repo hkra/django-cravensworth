@@ -114,6 +114,7 @@ dependencies = [
 dev = [
     { name = "build" },
     { name = "mkdocs" },
+    { name = "mkdocs-autorefs" },
     { name = "mkdocstrings", extra = ["python"] },
     { name = "pre-commit" },
     { name = "pytest" },
@@ -132,6 +133,7 @@ requires-dist = [
 dev = [
     { name = "build", specifier = ">=1.2.2.post1" },
     { name = "mkdocs", specifier = ">=1.6.1" },
+    { name = "mkdocs-autorefs", specifier = ">=1.4.2" },
     { name = "mkdocstrings", extras = ["python"], specifier = ">=0.29.1" },
     { name = "pre-commit" },
     { name = "pytest" },

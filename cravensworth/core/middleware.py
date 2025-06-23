@@ -1,12 +1,10 @@
-from django.utils.module_loading import import_string
-
-from cravensworth.core.conf import get_setting
 from cravensworth.core.experiment import (
     get_context_provider,
     set_state,
     CravensworthState,
     extract_overrides,
 )
+from cravensworth.core.source import get_source
 from cravensworth.core.utils import set_tracking_key
 
 
@@ -17,11 +15,7 @@ def cravensworth_middleware(get_response):
 
     This should be added to the `MIDDLEWARE` list in your Django settings.
     """
-
-    Source = import_string(
-        get_setting('SOURCE', 'cravensworth.core.source.SettingsSource'),
-    )
-    source = Source()
+    source = get_source()
     context_provider = get_context_provider()
 
     def middleware(request):

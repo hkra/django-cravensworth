@@ -10,7 +10,7 @@ dependencies = [
     "rapidhash>=0.1.0",
     "simpleeval>=1.0.3",
 ]
-description = "A Django app for feature flags."
+description = "A Django app for experimentation."
 license = "BSD-3-Clause"
 readme = "README.md"
 requires-python = ">= 3.10"
@@ -66,3 +66,9 @@ line-length = 80
 
 [tool.ruff.format]
 quote-style = "single"
+
+[[tool.uv.index]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+publish-url = "https://test.pypi.org/legacy/"
+explicit = true

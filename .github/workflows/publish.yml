@@ -8,6 +8,9 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  SETUPTOOLS_SCM_PRETEND_VERSION: ${{ github.event.release.tag_name }}
+
 jobs:
   release-build:
     runs-on: ubuntu-latest

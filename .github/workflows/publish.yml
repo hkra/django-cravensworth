@@ -7,15 +7,15 @@ on:
 permissions:
   contents: read
 
-environment:
-  name: pypi
-
 jobs:
   release-build:
     runs-on: ubuntu-latest
 
     permissions:
       id-token: write
+
+    environment:
+      name: pypi
 
     steps:
       - uses: actions/checkout@v4

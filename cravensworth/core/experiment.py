@@ -372,7 +372,7 @@ def is_variant(
     Returns true if the determined variant for the current entity matches
     `variant` or one of the list of variants, if multiple.
     """
-    state = get_state()
+    state = get_state(request)
     if state is None:
         raise ImproperlyConfigured(
             'Cravensworth state was not found in the request. Verify that the '

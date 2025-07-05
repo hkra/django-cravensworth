@@ -36,11 +36,10 @@ jobs:
       - name: Install development dependencies
         run: |
           uv pip install -e ".[dev]" --system
-          uv pip install tox tox-gh-actions --system
 
       - name: Run Tests
         run: |
-          uv run tox
+          uv run pytest
 
       - name: Build release distributions
         run: |

@@ -27,6 +27,15 @@ jobs:
         with:
           python-version: 3.13
 
+      - name: Install development dependencies
+        run: |
+          uv pip install -e ".[dev]" --system
+          uv pip install tox tox-gh-actions --system
+
+      - name: Run Tests
+        run: |
+          uv run tox
+
       - name: Build release distributions
         run: |
           uv build

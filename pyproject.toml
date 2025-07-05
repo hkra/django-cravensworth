@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=80.0", "setuptools-scm"]
+requires = ["setuptools>=64", "setuptools-scm>=8"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -8,6 +8,7 @@ dynamic = ["version"]
 dependencies = [
     "django>=4.2",
     "rapidhash>=0.1.0",
+    "setuptools-scm>=8.3.1",
     "simpleeval>=1.0.3",
 ]
 description = "A Django app for experimentation."

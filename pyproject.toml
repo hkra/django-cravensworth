@@ -39,7 +39,7 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://tbd.example.com/"
+Homepage = "https://django-cravensworth.readthedocs.io"
 
 [dependency-groups]
 dev = [

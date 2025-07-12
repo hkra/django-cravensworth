@@ -1,6 +1,8 @@
 # Django Cravensworth
 
-django-cravensworth is a Django app for feature flags.
+![docs build status](https://app.readthedocs.org/projects/django-cravensworth/badge/?version=latest)
+
+django-cravensworth is a Django app for experimentation.
 
 ## Quick start
 

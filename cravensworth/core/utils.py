@@ -6,7 +6,6 @@ from cravensworth.core.conf import get_setting
 
 
 DEFAULT_TRACKING_COOKIE = '__cwtk'
-TRACKING_KEY_KEY = object()
 
 
 def _tracking_cookie() -> str:
@@ -26,12 +25,12 @@ def get_tracking_key(request: HttpRequest) -> str:
     not exist, one will be created and added to the request, so it may be
     consumed later, if required.
     """
-    tk = request.META.get(TRACKING_KEY_KEY)
+    tk = getattr(request, '_cravensworth_tk', None)
     if tk is None:
         tk = request.COOKIES.get(_tracking_cookie())
     if tk is None:
         tk = generate_tracking_key()
-    request.META[TRACKING_KEY_KEY] = tk
+    setattr(request, '_cravensworth_tk', tk)
     return tk
 
 

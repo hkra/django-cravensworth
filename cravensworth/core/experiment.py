@@ -355,14 +355,14 @@ def set_state(request: HttpRequest, state: CravensworthState):
     """
     Sets experiment state on the given request.
     """
-    request.META[CravensworthState] = state
+    setattr(request, '_cravensworth_state', state)
 
 
 def get_state(request: HttpRequest) -> CravensworthState:
     """
     Gets experiment state from the given request.
     """
-    return request.META.get(CravensworthState)
+    return getattr(request, '_cravensworth_state', None)
 
 
 def is_variant(

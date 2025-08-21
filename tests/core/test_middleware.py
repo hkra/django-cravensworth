@@ -5,7 +5,6 @@ from django.contrib.auth.models import AnonymousUser
 from django.http import HttpResponse
 from django.test import Client, RequestFactory, TestCase, override_settings
 
-from cravensworth.core.experiment import CravensworthState
 from cravensworth.core.middleware import cravensworth_middleware
 
 
@@ -40,5 +39,5 @@ class TestCravensworthMiddleware(TestCase):
         request = self.factory.get('/')
         request.user = AnonymousUser()
         middleware(request)
-        state = request.META.get(CravensworthState)
+        state = request._cravensworth_state
         self.assertIsNotNone(state)

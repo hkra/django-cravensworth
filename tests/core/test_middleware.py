@@ -1,3 +1,4 @@
+from datetime import timedelta
 from unittest.mock import patch
 
 from django.contrib.auth.models import AnonymousUser
@@ -20,7 +21,13 @@ class TestCravensworthMiddleware(TestCase):
             mock_generate_tracking_key.return_value = 'NEW_TRACKING_KEY'
             response = self.client.get('/')
         self.assertTrue('tk' in response.cookies)
-        self.assertEqual(response.cookies['tk'].value, 'NEW_TRACKING_KEY')
+
+        cookie = response.cookies['tk']
+        self.assertEqual(cookie.value, 'NEW_TRACKING_KEY')
+        self.assertEqual(cookie['max-age'], timedelta(days=365).total_seconds())
+        self.assertEqual(cookie['path'], '/')
+        self.assertEqual(cookie['httponly'], True)
+        self.assertEqual(cookie['samesite'], 'Lax')
 
     def test_uses_existing_tracking_key(self):
         self.client.cookies.load({'tk': 'THE_TRACKING_KEY'})

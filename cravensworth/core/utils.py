@@ -1,3 +1,4 @@
+from datetime import timedelta
 from uuid import uuid4
 from django.http import HttpRequest, HttpResponse
 
@@ -39,7 +40,15 @@ def set_tracking_key(request: HttpRequest, response: HttpResponse):
     Sets the current tracking key as a cookie on the provided response. If no
     key exists, a new one will be generated.
     """
-    response.cookies[_tracking_cookie()] = get_tracking_key(request)
+    name = _tracking_cookie()
+    value = get_tracking_key(request)
+    response.set_cookie(
+        name,
+        value,
+        max_age=timedelta(days=365),
+        httponly=True,
+        samesite='Lax',
+    )
 
 
 __all__ = []

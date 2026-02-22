@@ -1,3 +1,0 @@
-# Sources
-
-::: cravensworth.core.source

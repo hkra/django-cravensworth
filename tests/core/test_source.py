@@ -1,7 +1,7 @@
 from django.test import TestCase, override_settings
 
-from cravensworth.core import experiment
-from cravensworth.core.source import SettingsSource
+from cravensworth.core import models
+from cravensworth.core.providers import SettingsSource
 
 
 class TestSettingsSource(TestCase):
@@ -44,16 +44,16 @@ class TestSettingsSource(TestCase):
         self.assertEqual(
             experiments,
             {
-                experiment.Experiment(
+                models.Experiment(
                     name='switch_syntax',
                     identity='random',
                     variants=('on', 'off'),
                     seed='switch_syntax',
                     audiences=(
-                        experiment.Audience(
+                        models.Audience(
                             rule=None,
                             allocations=(
-                                experiment.Allocation(
+                                models.Allocation(
                                     variant='on',
                                     percent=100,
                                 ),
@@ -61,33 +61,33 @@ class TestSettingsSource(TestCase):
                         ),
                     ),
                 ),
-                experiment.Experiment(
+                models.Experiment(
                     name='experimentitious',
                     identity='user.id',
                     variants=('active', 'inactive', 'control'),
                     seed='maseed',
                     audiences=(
-                        experiment.Audience(
+                        models.Audience(
                             rule='locale == "en-US"',
                             allocations=(
-                                experiment.Allocation(
+                                models.Allocation(
                                     variant='active',
                                     percent=10,
                                 ),
-                                experiment.Allocation(
+                                models.Allocation(
                                     variant='inactive',
                                     percent=80,
                                 ),
-                                experiment.Allocation(
+                                models.Allocation(
                                     variant='control',
                                     percent=10,
                                 ),
                             ),
                         ),
-                        experiment.Audience(
+                        models.Audience(
                             rule=None,
                             allocations=(
-                                experiment.Allocation(
+                                models.Allocation(
                                     variant='inactive',
                                     percent=100,
                                 ),

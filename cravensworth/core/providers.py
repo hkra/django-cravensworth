@@ -1,12 +1,73 @@
-from typing import Iterable
-from abc import ABC
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from operator import itemgetter
+from typing import Iterable
 
+from django.http import HttpRequest
 from django.utils.module_loading import import_string
 
 from cravensworth.core.conf import get_setting
-from cravensworth.core.experiment import Allocation, Audience, Experiment
+from cravensworth.core.models import Allocation, Audience, Context, Experiment
+from cravensworth.core.utils import get_tracking_key
+
+
+class ContextProvider(ABC):
+    """
+    Base class for context providers.
+
+    Context providers populate contexts.
+    """
+
+    @abstractmethod
+    def context(self, **kwargs) -> Context:
+        """
+        Constructs a context.
+        """
+        raise NotImplementedError()
+
+
+class DjangoRequestContextProvider(ContextProvider):
+    """
+    A context provider for Django environments.
+
+    Pre-populates the context with the Django user (`user`) and tracking key for
+    identifying anonymous users (`anonymous`).
+    """
+
+    def context(self, **kwargs) -> Context:
+        """
+        Constructs a `DjangoRequestContextProvider`.
+
+        Args:
+            **kwargs (dict[str, Any]): Arbitrary keyword arguments.
+                - request (django.http.HttpRequest): Django request. Must be
+                  passed as a keyword argument.
+        """
+        request = kwargs.get('request')
+        if request is None or not isinstance(request, HttpRequest):
+            raise ValueError(
+                'Django request is required as a keyword argument to context()'
+            )
+
+        return Context(
+            {
+                'user': getattr(request, 'user', None),
+                'anonymous': get_tracking_key(request),
+            }
+        )
+
+
+DEFAULT_CONTEXT_PROVIDER = (
+    'cravensworth.core.providers.DjangoRequestContextProvider'
+)
+
+
+def get_context_provider() -> ContextProvider:
+    """
+    Load and instantiate an instance of a context provider.
+    """
+    return import_string(
+        get_setting('CONTEXT_PROVIDER', DEFAULT_CONTEXT_PROVIDER),
+    )()
 
 
 class Source(ABC):
@@ -161,5 +222,15 @@ class SettingsSource(Source):
 
 def get_source() -> Source:
     return import_string(
-        get_setting('SOURCE', 'cravensworth.core.source.SettingsSource'),
+        get_setting('SOURCE', 'cravensworth.core.providers.SettingsSource'),
     )()
+
+
+__all__ = [
+    'ContextProvider',
+    'DjangoRequestContextProvider',
+    'get_context_provider',
+    'Source',
+    'SettingsSource',
+    'get_source',
+]

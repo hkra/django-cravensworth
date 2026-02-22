@@ -1,14 +1,13 @@
 from django.http import HttpResponse, Http404
 from django.test import RequestFactory, SimpleTestCase
 
-from cravensworth.core.experiment import (
-    Context,
-    set_state,
-    Experiment,
-    Audience,
+from cravensworth.core.models import (
     Allocation,
-    CravensworthState,
+    Audience,
+    Context,
+    Experiment,
 )
+from cravensworth.core.experiment import _CravensworthState, set_state
 from cravensworth.core.decorators import variant
 
 from tests.testapp.models import FancyModel
@@ -17,7 +16,7 @@ from tests.testapp.models import FancyModel
 class TestVariant(SimpleTestCase):
     def setUp(self):
         factory = RequestFactory()
-        state = CravensworthState(
+        state = _CravensworthState(
             experiments=[
                 Experiment(
                     name='on_switch',

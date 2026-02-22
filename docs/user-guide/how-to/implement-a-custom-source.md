@@ -5,11 +5,11 @@ provided sources, you can implement your own source.
 
 ## Creating your source
 
-Custom sources can inherit from the [Source][cravensworth.core.source.Source]
+Custom sources can inherit from the [Source][cravensworth.core.providers.Source]
 base class.
 
 `Source` has only one method to implement, `load()`, which returns an iterable
-of [Experiment][cravensworth.core.experiment.Experiment]s. `load()` will be
+of [Experiment][cravensworth.core.models.Experiment]s. `load()` will be
 called for every request when the middleware is installed. This is a crucial
 detail for performance considerations, as discussed below.
 

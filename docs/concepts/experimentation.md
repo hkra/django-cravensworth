@@ -1,7 +1,7 @@
 # Experimentation
 
-Cravensworth is a library for carrying out software experiments. Software
-experiments are much like their scientific namesake:
+Cravensworth is a library for carrying out controlled online experiments.
+Controlled experiments are much like their scientific namesake:
 
 1. Start with a problem you want to solve.
 2. Come up with a hypothesis.

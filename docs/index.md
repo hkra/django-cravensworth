@@ -1,9 +1,7 @@
 # What is Cravensworth?
 
-Cravensworth is a experimentation framework for Django.
-
-Its design is heavily inspired by Indeed's experimentation tool,
-[Proctor](https://engineering.indeedblog.com/blog/2013/10/announcing-proctor-open-source/).
+Cravensworth is a experimentation framework for Django inspired by Indeed's
+experimentation tool, [Proctor](https://engineering.indeedblog.com/blog/2013/10/announcing-proctor-open-source/).
 
 !!! NOTE
     django-cravensworth is pre-release software. The APIs and functionality may

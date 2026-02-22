@@ -12,7 +12,7 @@ dictionary in your `settings.py`, called `CRAVENSWORTH`.
 <a id="source"></a>
 `SOURCE` (str)
 :   Import string specifying the experiment source to use. Defaults to
-    `cravensworth.core.source.SettingsSource`.
+    `cravensworth.core.providers.SettingsSource`.
 
 <a id="enabled-ips"></a>
 `ENABLED_IPS` (list[str])
@@ -34,7 +34,7 @@ dictionary in your `settings.py`, called `CRAVENSWORTH`.
 
 `CONTEXT_PROVIDER` (str)
 :   Import string specifying the context provider to use. Defaults to
-    `cravensworth.core.experiment.DjangoRequestContextProvider`.
+    `cravensworth.core.providers.DjangoRequestContextProvider`.
 
 ## Settings source settings
 

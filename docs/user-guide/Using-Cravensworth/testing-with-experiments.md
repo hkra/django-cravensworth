@@ -14,25 +14,58 @@ every test run.
 
 ## Django unit/integration tests
 
-Experiments can be overriden for testing purposes in many ways, a few of which
-are:
+Experiments generally behave as expected in tests and should not require special
+configuration if your test configuration is similar to your real project setup.
+However, this may not be desirable in tests, where determinism is desired.
 
-* Providing a local experiment source for tests using `@override_settings`.
-* Changing the determined variant of the experiment under test using
-  `@override_settings` (set the variant allocation to 100%).
-* Override the determined variant by setting an override cookie.
-* Setting a fake or mock state object on the test request.
+Experiments can be overriden for testing purposes in several ways.
 
-Of these options, setting the override cookie is perhaps the least gross. You
-can do that like this:
+### @override_settings
 
-    def test_a_thing():
-        self.client.cookies.load({'__cw': 'a_thing:active'})
-        response = self.client.get('/')
+In a standard Django test case, `@override_settings` can be used to override the
+`EXPERIMENT` configuration. For example, if you are using a switch called
+"switch" and you want to make sure it is on for your test, override your test
+config so the switch is on:
 
-        # Check the response...
+```python
+class MyThingTest(SimpleTestCase):
+
+    @override_settings(CRAVENSWORTH={'EXPERIMENTS': ['switch:on']})
+    def test_my_thing(self):
+        ...
+```
+
+`@override_settings` can be used to override other parts of the configuration,
+too. So you could also create a `Source` just for tests, override the `SOURCE`
+import string to point at your test source.
+
+### Set an override cookie
+
+Another way is to utilize the override mechanism by setting a cookie on the
+request object. The [cravensworth.core.testing](../../api-reference/testing.md)
+package provides a utility that can be used in tests.
+
+```python
+from cravensworth.core.testing import override_experiment
+
+class MyThingTest(SimpleTestCase):
+    factory = RequestFactory()
+
+    def test_my_thing(self):
+        request = self.factory.get('/my/switchy/path')
+        override_experiment(request, 'switch', 'on')
+        ...
+
+    def test_multiple_things(self):
+        request = self.factory.get('/my/super/switchy/path')
+        override_experiment(request, {
+            'switch1': 'on',
+            'switch2': 'off',
+        })
+        ...
+```
 
 # Cleanup
 
-Having to override experiment bahavior can be _the worst_, so remember to clean
-up your experiments when you are done with them.
+Having to override experiment bahavior in tests can be annoying, so remember to
+clean up your experiments when you are done with them.

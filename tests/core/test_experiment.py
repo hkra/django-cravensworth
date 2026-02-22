@@ -1,18 +1,18 @@
 from dataclasses import dataclass
 from django.contrib.auth.models import AnonymousUser, User
-from django.core.exceptions import ImproperlyConfigured
 from django.test import RequestFactory, SimpleTestCase, override_settings
 
-from cravensworth.core.experiment import (
-    DEFAULT_CRAVENSWORTH_COOKIE,
+from cravensworth.core.models import (
     Allocation,
     Audience,
     Context,
-    CravensworthState,
-    DjangoRequestContextProvider,
     Experiment,
-    extract_overrides,
-    is_variant,
+)
+from cravensworth.core.providers import DjangoRequestContextProvider
+from cravensworth.core.experiment import (
+    DEFAULT_CRAVENSWORTH_COOKIE,
+    _CravensworthState,
+    _extract_overrides,
 )
 
 
@@ -480,14 +480,14 @@ class TestExtractOverrides(SimpleTestCase):
     def test_no_overrides(self):
         request = self.factory.get('/')
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(overrides, {})
 
     def test_extracts_overrides(self):
         request = self.factory.get('/')
         request.COOKIES[DEFAULT_CRAVENSWORTH_COOKIE] = 'switch:on'
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(overrides, {'switch': 'on'})
 
     def test_multiple_overrides(self):
@@ -496,7 +496,7 @@ class TestExtractOverrides(SimpleTestCase):
             'experiment1:variant1 experiment2:variant2'
         )
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(
             overrides,
             {
@@ -511,7 +511,7 @@ class TestExtractOverrides(SimpleTestCase):
             'experiment:variant1 experiment:variant2'
         )
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         # We don't really care about duplicates. It'll be sorted out by the
         # state, where last one clobbers all.
         self.assertEqual(
@@ -526,7 +526,7 @@ class TestExtractOverrides(SimpleTestCase):
         request = self.factory.get('/')
         request.COOKIES['mycookie'] = 'swank:active'
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(overrides, {'swank': 'active'})
 
     @override_settings(CRAVENSWORTH={'ENABLED_IPS': []})
@@ -534,7 +534,7 @@ class TestExtractOverrides(SimpleTestCase):
         request = self.factory.get('/')
         request.COOKIES[DEFAULT_CRAVENSWORTH_COOKIE] = 'switch:on'
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(overrides, {})
 
     @override_settings(CRAVENSWORTH={'ENABLED_IPS': ['127.0.0.1']})
@@ -543,7 +543,7 @@ class TestExtractOverrides(SimpleTestCase):
         request.META['REMOTE_ADDR'] = '127.0.0.1'
         request.COOKIES[DEFAULT_CRAVENSWORTH_COOKIE] = 'switch:on'
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(overrides, {'switch': 'on'})
 
     @override_settings(CRAVENSWORTH={'ENABLED_IPS': ['127.0.0.1', '127.0.0.2']})
@@ -552,22 +552,13 @@ class TestExtractOverrides(SimpleTestCase):
         request.META['REMOTE_ADDR'] = '127.0.0.3'
         request.COOKIES[DEFAULT_CRAVENSWORTH_COOKIE] = 'switch:on'
 
-        overrides = extract_overrides(request)
+        overrides = _extract_overrides(request)
         self.assertEqual(overrides, {})
-
-
-class TestIsVariant(SimpleTestCase):
-    factory = RequestFactory()
-
-    def test_raises_when_state_is_missing(self):
-        request = self.factory.get('/')
-        with self.assertRaises(ImproperlyConfigured):
-            is_variant(request, 'awesome', 'frangled')
 
 
 class TestCravensworthState(SimpleTestCase):
     def test_returns_false_for_undeclared_experiment(self):
-        state = CravensworthState(
+        state = _CravensworthState(
             experiments=[],
             overrides={},
             context=Context(),
@@ -575,7 +566,7 @@ class TestCravensworthState(SimpleTestCase):
         self.assertFalse(state.is_variant('bobobobobobobo', 'bam'))
 
     def test_is_variant_single_variant(self):
-        state = CravensworthState(
+        state = _CravensworthState(
             experiments=[
                 Experiment(
                     name='a',
@@ -593,7 +584,7 @@ class TestCravensworthState(SimpleTestCase):
         self.assertFalse(state.is_variant('a', '2'))
 
     def test_is_variant_multiple_variants(self):
-        state = CravensworthState(
+        state = _CravensworthState(
             experiments=[
                 Experiment(
                     name='a',
@@ -611,7 +602,7 @@ class TestCravensworthState(SimpleTestCase):
         self.assertFalse(state.is_variant('a', ['2', '3']))
 
     def test_override(self):
-        state = CravensworthState(
+        state = _CravensworthState(
             experiments=[
                 Experiment(
                     name='a',

@@ -11,7 +11,7 @@ Cravensworth has been tested with, and supports, the following.
 
 ### Request
 
-The [DjangoRequestContextProvider][cravensworth.core.experiment.DjangoRequestContextProvider]
+The [DjangoRequestContextProvider][cravensworth.core.providers.DjangoRequestContextProvider]
 requires that the request be available in the Django context.
 
 If running an application that does not have access to a request object (e.g., a

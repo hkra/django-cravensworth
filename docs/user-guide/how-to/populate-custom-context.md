@@ -8,7 +8,7 @@ rules require.
 ## Custom context providers
 
 The middleware will load whatever context provider is configured in settings,
-and will default to [DjangoRequestContextProvider][cravensworth.core.experiment.DjangoRequestContextProvider]
+and will default to [DjangoRequestContextProvider][cravensworth.core.providers.DjangoRequestContextProvider]
 if no provider is configured.
 
 To use a custom provider, create a class that extends the `ContextProvider` base
